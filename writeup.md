@@ -1,9 +1,4 @@
-##Writeup Template
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Advanced Lane Finding Project**
+#Advanced Lane Finding Project
 
 The goals / steps of this project are the following:
 
@@ -39,13 +34,13 @@ The goals / steps of this project are the following:
 The code for this step is contained in the first code cell of the IPython notebook located in "./CarND-Advanced-Lane-Lines/calibration.ipynb.
 
 
-I start by reading all the calibration images given for the calibration of the camera. I applied the function ***cv2.findChessboardCorners*** to each image to detect and obtain the coordinates of the chessboard corners, this function will return 2 values one boolean (retval), True if the corners were detected and a list(corners) . If the coordinates were detected I would append this coordinates to my list called `imgpoints` which is a list to save the points corresponding to chessboard corners on the image in a 2D plane. In order to be able to map the position of the all the corners found in each image a list called `objpoints` this list contains a so called "object points" that have the form of (x,y,z), where z is always zero, this object points represent the coordinates of the chesboard cornes in the real world. 
+I started by reading all the calibration images given for the calibration of the camera. I applied the function ***cv2.findChessboardCorners*** to each image to detect and obtain the coordinates of the chessboard corners, this function will return 2 values one boolean (retval), True if the corners were detected and a list(corners) . If the coordinates were detected I would append this coordinates to my list called `imgpoints` which is a list to save the points corresponding to chessboard corners on the image in a 2D plane. In order to be able to map the position of the all the corners found in each image a list called `objpoints` this list contains a so called "object points" that have the form of (x,y,z), where z is always zero, this object points represent the coordinates of the chesboard cornes in the real world. 
 
-In order to make sure that the corners were detected correctly I used the function `cv2.drawChessboardCorners` to draw the corner found on top of the image tested. This is the result.
+In order to make sure that the corners were detected correctly I used the function ***cv2.drawChessboardCorners*** to draw the corner found on top of the image tested. This is the result.
 
 ![alt text][image1]
 
-I used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
+I used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the ***cv2.calibrateCamera()*** function.  I applied this distortion correction to the test image using the ***cv2.undistort()*** function and obtained this result: 
 
 ![alt text][image2]
 
