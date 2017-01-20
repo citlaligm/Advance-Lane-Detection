@@ -17,7 +17,7 @@ The goals / steps of this project are the following:
 
 
 
-[image2]: ./test_images/test1.jpg "Road Transformed"
+[image10]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
 [image5]: ./examples/color_fit_lines.jpg "Fit Visual"
@@ -49,7 +49,7 @@ I used the output `objpoints` and `imgpoints` to compute the camera calibration 
 
 ####1. Has the distortion correction been correctly applied to each image?
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
+![alt text][image10]
 ####2. Has a binary image been created using color transforms, gradients or other methods?
 Oooh, binary image... you mean like this one?  (note: this is not from one of the test images)
 
