@@ -13,6 +13,11 @@ The goals / steps of this project are the following:
 
 ---
 
-The images for camera calibration are stored in the folder called `camera_cal`.  The images in `test_images` are for testing your pipeline on single frames.  The video called `project_video.mp4` is the video your pipeline should work well on.  `challenge_video.mp4` is an extra (and optional) challenge for you if you want to test your pipeline.
+The images for camera calibration are stored in the folder called `camera_cal`.  The images in `test_images` are for testing your pipeline on single frames.  The video called `project_video.mp4` is the video used for my pipeline.
 
-If you're feeling ambitious (totally optional though), don't stop there!  We encourage you to go out and take video of your own, calibrate your camera and show us how you would implement this project from scratch!
+---
+
+***Development.ipynb*** -- Contains images for the main steps required for this project.
+
+***LaneDetection.ipynb*** -- Contains the functions used for the pipeline, the Line() class definition and some other helper function.
+
