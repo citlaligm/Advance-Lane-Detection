@@ -48,13 +48,13 @@ I used the output `objpoints` and `imgpoints` to compute the camera calibration 
 ####1. Has the distortion correction been correctly applied to each image?
 In order to show the results obtained once the calibration was obtained, I will show you the distortion correction aplied in one of the test images.
 
-The function ***cv2.undistort(img, mtx, dist, None, mtx)*** takes an image, the calibration matrix, the distortion coefficients. The function returns an image without distortion. 
+The function ***cv2.undistort(img, mtx, dist, None, mtx)*** takes an image, the calibration matrix, the distortion coefficients; `mtx` and `dist` are obtained from the calibration of the camera. The function returns an image without distortion. 
 
 ![alt text][image3]
 
 
 ####2. Has a binary image been created using color transforms, gradients or other methods?
-In order to filter the images and keep only the lane lines, I used the absolute value of Sobel x since this will help me to keep more vertical lines and it will dimish the horizontal lines. This is helpful since the lane lines I'm looking for are vertical. Additilonally I also implemented a color thresholding using the HLS color space and applying a threshold on the S(saturation) channel since this will work for yellow and white lines.
+In order to filter the images and keep only the lane lines, I used the absolute value of Sobel x since this will help me to keep the vertical lines and it will dimish the horizontal lines. This is helpful since the lane lines I'm looking for are vertical. Additilonally I also implemented a color thresholding using the HLS color space and applying a threshold on the S(saturation) channel since this will work for yellow and white lines.
 
 
 ![alt text][image4]
@@ -65,7 +65,7 @@ In order to filter the images and keep only the lane lines, I used the absolute 
 
 The function `warp` can be found in the IPython notebook called `Development` on the 10th cell. It takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  
 
-I chose to hardcode the source and destination points in the following manner:
+I hardcode the source and destination points in the following manner:
 
 ```
 horizon = np.uint(2*image_size[0]/3)
@@ -108,19 +108,19 @@ After calculating the warped image. First I calculate the histogram across the i
 
 ![alt text][image6]
 
-Then I pass the histogram to a function `find_two_peaks_image` to find the center of each of the peaks. This code can be found on the IPython notebook called `Development` on cell #16, then I implemented a function called `sliding_window` to iterate through the image and find the x coordinates and y coordinates of the pixels that correspond to the lanes starting from the centers that I found earlier.
+Then I passed the histogram to a function `find_two_peaks_image` to find the center of each of the peaks. This code can be found on the IPython notebook called `Development` on cell #16, then I implemented a function called `sliding_window` to iterate through the image and find the x coordinates and y coordinates of the pixels that corresponded to the lanes starting from the centers that I found earlier.
 
 Once I got the pixels I fit them to a 2nd order polynomial of the form:
 				`f(y)=Ay^2 + By + C ` 
 
-The result obtained was this for one of the test images:
+The result obtained for one of the test images is the following:
 
 ![alt text][image7]
 
 
 ####5. Having identified the lane lines, has the radius of curvature of the road been estimated? And the position of the vehicle with respect to center in the lane?
 
-Yes. I used the x and y coordinates obtained with the polynomial to calculate the curvature of the lane. This code can be found on the IPython notebook called `Development` on cell #6.
+Yes. I used the x and y coordinates obtained with the polynomial to calculate the curvature of the lane. This code can be found on the IPython notebook called `Development` on cell #6 and on the IPython notebook called `LaneDetection` on cell #14 line 111.
 
 
 ---
@@ -129,9 +129,9 @@ Yes. I used the x and y coordinates obtained with the polynomial to calculate th
 
 ####1. Does the pipeline established with the test images work to process the video?
 
-The code used for the final pipeline can be found on the IPython notebook called `LaneDetection`, this notebook will contain all the function described on point above but with out the images demostrations. 
+The code used for the final pipeline can be found on the IPython notebook called `LaneDetection`, this notebook will contain all the function described above but without the images demostrations. 
 
-Aditionally contains the code for the Line class that was implemented to keep track of the lanes in each frame.
+Aditionally contains the code for the Line class that was implemented to keep track of the lanes in each frame as well as other helper functions. 
 
 Here's a [link to my video result](https://youtu.be/Vn8J9WvfpgY)
 
@@ -149,4 +149,4 @@ This is the README of this project.
 
   
 This project was very interesting and challenging. I learnt a lot of technics used for computer vision like measuring and correcting distortion, perpective trasnformation, how to use diffent color spaces to filter images, etc. One of the most challenging parts for me was how to stablish the right parameters to determine which detected line was not a good one so sometimes I added lanes that messed up the avegerage of the lane. So definitely I should work on a better strategy or on a more sophisticated method to identified bad lines. I also could explore more on the threshold and color spaces to find a better filter.
-  
+
