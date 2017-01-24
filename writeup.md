@@ -14,8 +14,9 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 [image1]: ./results/draw_chess_points.png "Chess board points"
 [image2]: ./results/undistorted.png "Undistorted"
-
-
+[image3]: ./results/undis_example.png "Undistortion"
+[image4]: ./results/abs_sobel_hsl.png "Combining thresholds"
+[image5]: ./results/warped.png "Warped"
 
 [image10]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
@@ -48,42 +49,60 @@ I used the output `objpoints` and `imgpoints` to compute the camera calibration 
 ###Pipeline (single images)
 
 ####1. Has the distortion correction been correctly applied to each image?
-To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image10]
-####2. Has a binary image been created using color transforms, gradients or other methods?
-Oooh, binary image... you mean like this one?  (note: this is not from one of the test images)
+In order to show the results obtained once the calibration was obtained, I will show you the distortion correction aplied in one of the test images.
+
+The function ***cv2.undistort(img, mtx, dist, None, mtx)*** takes an image, the calibration matrix, the distortion coefficients. The function returns an image without distortion. 
 
 ![alt text][image3]
 
+
+####2. Has a binary image been created using color transforms, gradients or other methods?
+In order to filter the images and keep only the lane lines, I used the absolute value of Sobel x since this will help me to keep more vertical lines and it will dimish the horizontal lines. This is helpful since the lane lines I'm looking for are vertical. Additilonally I also implemented a color thresholding using the HLS color space and applying a threshold on the S(saturation) channel since this will work for yellow and white lines.
+
+
+![alt text][image4]
+
+
+
 ####3. Has a perspective transform been applied to rectify the image?
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The function `warp` can be found in the IPython notebook called `Development` on the 10th cell. It takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  
+
+I chose to hardcode the source and destination points in the following manner:
 
 ```
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
+horizon = np.uint(2*image_size[0]/3)
+bottom = np.uint(image_size[0])
+center_lane = np.uint(image_size[1]/2)
+offset = 0.2
+
+x_left_bottom = center_lane - center_lane
+x_right_bottom = 2*center_lane
+x_right_upper = center_lane + offset*center_lane
+x_left_upper = center_lane - offset*center_lane
+
+
+source = np.float32([[x_left_bottom,bottom],[x_right_bottom,bottom],
+				[x_right_upper,horizon],[x_left_upper,horizon]])
+
+destination = np.float32([[0,image_size[0]],[image_size[1],image_size[0]],
+                  [image_size[1],0],[0,0]])
+
 
 ```
 This resulted in the following source and destination points:
 
 | Source        | Destination   | 
 |:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
+| 720, 0        | 720, 0        | 
+| 1280, 720     | 720, 1200     |
+| 768, 480      | 0, 1200       |
+| 512, 480      | 0, 0          |
+
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
-![alt text][image4]
+![alt text][image5]
 
 ####4. Have lane line pixels been identified in the rectified image and fit with a polynomial?
 
