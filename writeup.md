@@ -17,12 +17,9 @@ The goals / steps of this project are the following:
 [image3]: ./results/undis_example.png "Undistortion"
 [image4]: ./results/abs_sobel_hsl.png "Combining thresholds"
 [image5]: ./results/warped.png "Warped"
+[image6]: ./results/histogram.png "Histogram"
+[image7]: ./results/polinomy.png "Polynomial"
 
-[image10]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[video1]: ./project_video.mp4 "Fit Visual"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 ###Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -104,15 +101,27 @@ I verified that my perspective transform was working as expected by drawing the 
 
 ![alt text][image5]
 
+
 ####4. Have lane line pixels been identified in the rectified image and fit with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+After calculating the warped image. First I calculate the histogram across the image, this was implemented using `numpy.sum()` to sum all the pixels on the rows, the result is the following:
 
-![alt text][image5]
+![alt text][image6]
+
+Then I pass the histogram to a function `find_two_peaks_image` to find the center of each of the peaks. This code can be found on the IPython notebook called `Development` on cell #16, then I implemented a function called `sliding_window` to iterate through the image and find the x coordinates and y coordinates of the pixels that correspond to the lanes starting from the centers that I found earlier.
+
+Once I got the pixels I fit them to a 2nd order polynomial of the form:
+				`f(y)=Ay^2 + By + C ` 
+
+The result obtained was this for one of the test images:
+
+![alt text][image7]
+
 
 ####5. Having identified the lane lines, has the radius of curvature of the road been estimated? And the position of the vehicle with respect to center in the lane?
 
-Yep, sure did!
+Yes. I used the x and y coordinates obtained with the polynomial to calculate the curvature of the lane. This code can be found on the IPython notebook called `Development` on cell #6.
+
 
 ---
 
@@ -120,7 +129,11 @@ Yep, sure did!
 
 ####1. Does the pipeline established with the test images work to process the video?
 
-It sure does!  Here's a [link to my video result](./project_video.mp4)
+The code used for the final pipeline can be found on the IPython notebook called `LaneDetection`, this notebook will contain all the function described on point above but with out the images demostrations. 
+
+Aditionally contains the code for the Line class that was implemented to keep track of the lanes in each frame.
+
+Here's a [link to my video result](https://youtu.be/Vn8J9WvfpgY)
 
 ---
 
@@ -128,11 +141,12 @@ It sure does!  Here's a [link to my video result](./project_video.mp4)
 
 ####1. Has a README file been included that describes in detail the steps taken to construct the pipeline, techniques used, areas where improvements could be made?
 
-You're reading it!
+This is the README of this project.
 
 
 ---
 ##Discussion
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
-
+  
+This project was very interesting and challenging. I learnt a lot of technics used for computer vision like measuring and correcting distortion, perpective trasnformation, how to use diffent color spaces to filter images, etc. One of the most challenging parts for me was how to stablish the right parameters to determine which detected line was not a good one so sometimes I added lanes that messed up the avegerage of the lane. So definitely I should work on a better strategy or on a more sophisticated method to identified bad lines. I also could explore more on the threshold and color spaces to find a better filter.
+  
